@@ -181,7 +181,10 @@
                         <span>➕</span> 範囲を追加
                     </button>
                     <button id="reset-marks" class="btn secondary">
-                        <span>🔄</span> 全消去
+                        <span>🔄</span> 範囲をリセット
+                    </button>
+                    <button id="clear-file" class="btn secondary" style="color: #ff4d4d; border: 1px solid rgba(255, 77, 77, 0.3);">
+                        <span>✖</span> ファイルを閉じる
                     </button>
                     <button id="finish-btn" class="btn special">
                         <span>✔</span> 切り出し実行
@@ -271,6 +274,16 @@
             wsRegions.addRegion({ start: t, end: Math.min(t + inc, dur), color: 'rgba(255, 45, 117, 0.2)', drag: true, resize: true });
         };
         zoomSlider.oninput = (e) => wavesurfer.zoom(Number(e.target.value));
+        document.getElementById('clear-file').onclick = () => {
+            if (confirm("現在のファイルを閉じて初期画面に戻りますか？")) {
+                if (wavesurfer) wavesurfer.destroy();
+                editorArea.style.display = 'none';
+                resultsArea.style.display = 'none';
+                dropZone.style.display = 'block';
+                originalBuffer = null;
+                segmentGrid.innerHTML = '';
+            }
+        };
 
         document.getElementById('finish-btn').onclick = async () => {
             const regions = wsRegions.getRegions(); if (!regions.length) return;
